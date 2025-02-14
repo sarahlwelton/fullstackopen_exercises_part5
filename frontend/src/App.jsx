@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/Login'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -8,12 +10,15 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [])
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
@@ -47,6 +52,36 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInBlogsUser')
     setUser(null)
+  }
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  }
+
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value)
+  }
+
+  const addBlog = (event) => {
+    event.preventDefault
+    const newBlog = {
+      title: title,
+      author: author,
+      url: url
+    }
+
+    blogService
+      .create(newBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+      })
   }
 
   const loginForm = () => (
@@ -83,6 +118,14 @@ const App = () => {
         <button
           type="submit"
           onClick={() => handleLogout() }>Log Out</button>
+        <BlogForm
+          addBlog={addBlog}
+          title={title}
+          handleTitleChange={handleTitleChange}
+          author={author}
+          handleAuthorChange={handleAuthorChange}
+          url={url}
+          handleUrlChange={handleUrlChange}/>
       </div>
     }
     <div>

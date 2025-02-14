@@ -1,4 +1,4 @@
-const loginForm = ({ handleLogin, username, password, setUsername, setPassword }) => (
+const LoginForm = ({ handleLogin, username, password, setUsername, setPassword }) => (
   <form onSubmit={handleLogin}>
     <div>
       username
@@ -20,3 +20,5 @@ const loginForm = ({ handleLogin, username, password, setUsername, setPassword }
     </div>
   </form>
 )
+
+export default LoginForm
