@@ -1,3 +1,6 @@
+# Non-templated adds
+package-lock.json
+
 # Logs
 logs
 *.log
