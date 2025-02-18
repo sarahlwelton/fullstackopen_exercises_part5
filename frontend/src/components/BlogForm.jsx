@@ -30,7 +30,7 @@ const BlogForm = ({ addBlog, title, handleTitleChange, author, handleAuthorChang
           />
       </div>
       <div>
-        <button type="submit">Add blog</button>
+        <button type="submit">Add Blog</button>
       </div>
     </form>
   </>
