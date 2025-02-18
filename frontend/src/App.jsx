@@ -81,7 +81,7 @@ const App = () => {
   }
 
   const addBlog = (event) => {
-    event.preventDefault
+    event.preventDefault()
     const newBlog = {
       title: title,
       author: author,
@@ -92,7 +92,10 @@ const App = () => {
       .create(newBlog)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setMessage(`A new blog, ${newBlog.title} by ${newBlog.author} was added.`)
+        setMessage(`A new blog, ${newBlog.title} by ${newBlog.author}, was added.`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
         setTitle('')
         setAuthor('')
         setUrl('')
