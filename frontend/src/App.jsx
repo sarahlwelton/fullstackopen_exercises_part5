@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,  useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/Login'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -68,39 +68,26 @@ const App = () => {
     }, 5000)
   }
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
+  const addBlog = (blogObject) => {
 
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value)
-  }
-
-  const addBlog = (event) => {
-    event.preventDefault()
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url
-    }
-
+    blogFormRef.current.toggleVisibility()
     blogService
-      .create(newBlog)
+      .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setMessage(`A new blog, ${newBlog.title} by ${newBlog.author}, was added.`)
+        setMessage(`A new blog, ${returnedBlog.title} by ${returnedBlog.author}, was added.`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
-        setTitle('')
-        setAuthor('')
-        setUrl('')
       })
   }
+
+  // Add ref to hide after new blog created
+  const blogForm = () => (
+    <Togglable buttonLabel='Add Blog' ref={blogFormRef} >
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
+  )
 
   return (
     <div>
@@ -123,15 +110,7 @@ const App = () => {
           <button
             type="submit"
             onClick={() => handleLogout() }>Log Out</button>
-          <BlogForm
-            addBlog={addBlog}
-            title={title}
-            handleTitleChange={handleTitleChange}
-            author={author}
-            handleAuthorChange={handleAuthorChange}
-            url={url}
-            handleUrlChange={handleUrlChange}
-            />
+          {blogForm()}
         <h2>Current Saved Blogs</h2>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
