@@ -82,7 +82,6 @@ const App = () => {
       })
   }
 
-  // Add ref to hide after new blog created
   const blogForm = () => (
     <Togglable buttonLabel='Add Blog' ref={blogFormRef} >
       <BlogForm createBlog={addBlog} />

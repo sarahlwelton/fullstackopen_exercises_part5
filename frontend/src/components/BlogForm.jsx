@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-// Add ref to hide after new blog created
 const BlogForm = ({ createBlog }) => {
   
   const [title, setTitle] = useState('')
