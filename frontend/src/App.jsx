@@ -82,6 +82,26 @@ const App = () => {
       })
   }
 
+  const updateLikes = id => {
+    const blog = blogs.find(b => b.id === id)
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+    blogService
+      .update(id, changedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id === id ? returnedBlog : blog))
+      })
+      .catch(error => {
+        setMessage(
+          `Could not update likes for ${blog.title}`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+        setBlogs(blogs.filter(b => b.id !== id))
+      })
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='Add Blog' ref={blogFormRef} >
       <BlogForm createBlog={addBlog} />
@@ -112,7 +132,7 @@ const App = () => {
           {blogForm()}
         <h2>Current Saved Blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
         )}
     </div>
     }
