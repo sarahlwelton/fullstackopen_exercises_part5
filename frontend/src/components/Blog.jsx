@@ -24,6 +24,7 @@ const Blog = ({ blog, updateLikes }) => {
         <p>by {blog.author}</p>
         <p>Likes: {blog.likes} <button onClick={() => updateLikes(blog.id)}>Like</button></p>
         <p>{blog.url}</p>
+        <p>Added by: {blog.user.name}</p>
       </div>
     </div>
     </div>
