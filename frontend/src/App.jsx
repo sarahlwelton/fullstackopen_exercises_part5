@@ -104,6 +104,19 @@ const App = () => {
       })
   }
 
+  const deleteBlog = id => {
+    const blog = blogs.find(b => b.id === id)
+
+    if (window.confirm(`Delete blog ${blog.title} by ${blog.author}?`)) {
+      blogService
+      .deleteBlog(blog.id)
+      .then(setMessage(`Deleted blog ${blog.title} by ${blog.author}.`),
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000))
+    }
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='Add Blog' ref={blogFormRef} >
       <BlogForm createBlog={addBlog} />
@@ -134,7 +147,8 @@ const App = () => {
           {blogForm()}
         <h2>Current Saved Blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
+          <Blog key={blog.id} blog={blog} updateLikes={updateLikes}
+          deleteBlog={deleteBlog} user={user} />
         )}
     </div>
     }
