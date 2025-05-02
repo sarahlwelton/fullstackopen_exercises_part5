@@ -4,9 +4,9 @@ const blog = require('../models/blog')
 const user = require('../models/user')
 const api = supertest(app)
 
-const dummy = (blogs) => {
+/* const dummy = (blogs) => {
   return 1
-}
+} */
 
 const totalLikes = (blogs) => {
   const reducer = (sum, blog) => {
@@ -195,7 +195,7 @@ const usersList = [{
 ]
 
 module.exports = {
-  dummy,
+  //dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
