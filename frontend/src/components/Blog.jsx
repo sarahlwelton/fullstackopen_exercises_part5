@@ -10,13 +10,22 @@ const Blog = ({
 
   const [visible, setVisible] = useState(false)
 
-  const hidden = { display: visible ? '' : 'none' }
+  const hidden = { 
+    display: visible ? '' : 'none', 
+    paddingTop: 5,
+    borderBottom: '1px solid black',
+    width: '300px'
+  }
 
-  const userCheck = { display: blog.user.name === user.name ? '' : 'none'}
+  const userCheck = { 
+    display: blog.user.name === user.name ? '' : 'none',
+    paddingBottom: 15
+  }
 
   const blogStyle = {
     paddingTop: 10,
-    paddingLeft: 5
+    paddingLeft: 5,
+    paddingBottom: 10
   }
 
   const toggleVisibility = () => {
@@ -26,11 +35,11 @@ const Blog = ({
   return (
     <div>
     <div style={blogStyle}>
-      <p><strong>{blog.title}</strong>  
-      <button onClick={toggleVisibility}>{visible ? 'Hide': 'View Details'}</button>
-      </p>
-      <div style={hidden}>
-        <p>by {blog.author}</p>
+      <p><strong>{blog.title}</strong></p>
+      <p>by {blog.author}</p> 
+      <button onClick={toggleVisibility}>{visible ? 'Hide Details': 'View Details'}</button>
+      <div style={hidden}
+      className="blogDetails">
         <p>Likes: {blog.likes} <button onClick={() => updateLikes(blog.id)}>Like</button></p>
         <p>{blog.url}</p>
         <p>Added by: {blog.user.name}</p>
