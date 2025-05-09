@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-test('Blog renders title and author but not URL or likes', () => {
+describe('<Blog />', () => {
+  let container
+
   const blog = {
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
@@ -16,10 +19,26 @@ test('Blog renders title and author but not URL or likes', () => {
     name: 'Arto Hellas'
   }
 
-  const { container } = render(<Blog blog={blog} user={user} />)
-
-  screen.debug()
-
-  const div = container.querySelector('.blogDetails')
-  expect(div).not.toBeVisible()
+  beforeEach(() => {
+    container = render(
+      <Blog blog={blog} 
+      user={user} 
+      />
+    ).container
+  })
+  
+  test('Blog renders title and author but not URL or likes', () => {
+    const div = container.querySelector('.blogDetails')
+    expect(div).toHaveStyle('display: none')
+  })
+  
+  test('Blog renders URL and likes on click', async () => {
+    const actor = userEvent.setup()
+    const button = screen.getByText('View Details')
+    await actor.click(button)
+  
+    const div = container.querySelector('.blogDetails')
+    expect(div).not.toHaveStyle('display: none')
+  })
 })
+
