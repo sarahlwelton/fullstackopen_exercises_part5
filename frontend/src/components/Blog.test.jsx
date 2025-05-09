@@ -19,26 +19,38 @@ describe('<Blog />', () => {
     name: 'Arto Hellas'
   }
 
+  const mockHandler = vi.fn()
+
   beforeEach(() => {
     container = render(
       <Blog blog={blog} 
-      user={user} 
+      user={user}
+      updateLikes={mockHandler} 
       />
     ).container
   })
-  
-  test('Blog renders title and author but not URL or likes', () => {
+
+  test('Blog initially shows title and author but not URL or likes', () => {
     const div = container.querySelector('.blogDetails')
     expect(div).toHaveStyle('display: none')
   })
   
-  test('Blog renders URL and likes on click', async () => {
+  test('Blog shows URL and likes on click', async () => {
     const actor = userEvent.setup()
     const button = screen.getByText('View Details')
     await actor.click(button)
   
     const div = container.querySelector('.blogDetails')
     expect(div).not.toHaveStyle('display: none')
+  })
+
+  test('Clicking Like twice calls event handler twice', async () => {
+    const actor = userEvent.setup()
+    const button = screen.getByText('Like')
+    await actor.click(button)
+    await actor.click(button)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
 
