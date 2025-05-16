@@ -13,6 +13,12 @@ mongoose.set('strictQuery', false)
 
 mongoose.connect(config.MONGO_URL)
 
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+  console.log('NODE_ENV:', process.env.NODE_ENV)
+}
+
 app.use(cors())
 app.use(express.json())
 
