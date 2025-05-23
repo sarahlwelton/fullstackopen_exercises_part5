@@ -35,7 +35,7 @@ const Blog = ({
   return (
     <div>
     <div style={blogStyle}>
-      <p><strong>{blog.title}</strong></p>
+      <h3>{blog.title}</h3>
       <p>by {blog.author}</p> 
       <button onClick={toggleVisibility}>{visible ? 'Hide Details': 'View Details'}</button>
       <div style={hidden}
