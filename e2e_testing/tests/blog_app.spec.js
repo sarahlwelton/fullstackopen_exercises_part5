@@ -44,5 +44,21 @@ describe('Blog app', () => {
       await createBlog(page, 'Playwright Blog', 'Man McMann', 'https://itsablog.com')
       await expect(page.getByRole('heading', { name: 'Playwright Blog' })).toBeVisible()
     })
+
+    describe('and blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'Playwright Blog', 'Man McMann', 'https://itsablog.com')
+        await createBlog(page, 'Tests for Days', 'Testy McTest', 'https://testyblog.com')
+      })
+
+      test('the new blog can be liked', async ({ page }) => {
+        const blogElement = await page.getByRole('heading', { name: 'Playwright Blog' }).locator('..')
+
+        await blogElement.getByRole('button', { name: 'View Details' }).click()
+        await blogElement.getByRole('button', { name: 'Like' }).click()
+
+        await expect(blogElement.getByText('Likes: 1')).toBeVisible()
+      })
+    })
   })
 })
