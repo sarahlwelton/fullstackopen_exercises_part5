@@ -51,13 +51,24 @@ describe('Blog app', () => {
         await createBlog(page, 'Tests for Days', 'Testy McTest', 'https://testyblog.com')
       })
 
-      test('the new blog can be liked', async ({ page }) => {
+      test('a new blog can be liked', async ({ page }) => {
         const blogElement = await page.getByRole('heading', { name: 'Playwright Blog' }).locator('..')
 
         await blogElement.getByRole('button', { name: 'View Details' }).click()
         await blogElement.getByRole('button', { name: 'Like' }).click()
 
         await expect(blogElement.getByText('Likes: 1')).toBeVisible()
+      })
+
+      test('a blog can be deleted', async ({ page }) => {
+        const blogElement = await page.getByRole('heading', { name: 'Tests for Days' }).locator('..')
+
+        await blogElement.getByRole('button', { name: 'View Details' }).click()
+        page.on('dialog', dialog => dialog.accept())
+        await blogElement.getByRole('button', { name: 'Delete' }).click()
+
+        await expect(page.getByText('Deleted blog Tests for Days by Testy McTest')).toBeVisible()
+
       })
     })
   })
