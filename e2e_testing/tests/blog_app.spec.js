@@ -12,6 +12,13 @@ describe('Blog app', () => {
         password: 'iluvborbs'
       }
     })
+    await request.post('/api/users', {
+      data: {
+        name: 'Matti Luukkainen',
+        username: 'mlukkai',
+        password: 'iluvcats'
+      }
+    })
   })
 
   test('Login form is shown', async ({ page }) => {
@@ -30,7 +37,7 @@ describe('Blog app', () => {
 
     test('Fails with wrong password', async ({ page }) => {
 
-      await loginWith(page, 'mluukai', 'salainen')
+      await loginWith(page, 'hellas', 'salainen')
       await expect(page.getByText('Incorrect username or password.')).toBeVisible()
     })
   })
@@ -69,6 +76,22 @@ describe('Blog app', () => {
 
         await expect(page.getByText('Deleted blog Tests for Days by Testy McTest')).toBeVisible()
 
+      })
+
+      test('delete button is only visible to the right user', async ({ page }) => {
+        const blogElement = await page.getByRole('heading', { name: 'Tests for Days' }).locator('..')
+
+        await blogElement.getByRole('button', { name: 'View Details' }).click()
+
+        await expect(blogElement.getByText('Delete')).toBeVisible()
+
+        await page.getByRole('button', { name: 'Log Out' }).click()
+
+        await loginWith(page, 'mlukkai', 'iluvcats')
+
+        await blogElement.getByRole('button', { name: 'View Details' }).click()
+
+        await expect(blogElement.getByText('Delete')).not.toBeVisible()
       })
     })
   })
