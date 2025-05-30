@@ -33,8 +33,8 @@ const Blog = ({
   }
   
   return (
-    <div>
-    <div style={blogStyle}>
+    <>
+    <div style={blogStyle} data-testid='blog'>
       <h3>{blog.title}</h3>
       <p>by {blog.author}</p> 
       <button onClick={toggleVisibility}>{visible ? 'Hide Details': 'View Details'}</button>
@@ -48,7 +48,7 @@ const Blog = ({
         </div>
       </div>
     </div>
-    </div>
+    </>
   )
 }
 

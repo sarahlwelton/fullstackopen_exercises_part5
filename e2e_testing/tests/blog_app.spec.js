@@ -93,6 +93,27 @@ describe('Blog app', () => {
 
         await expect(blogElement.getByText('Delete')).not.toBeVisible()
       })
+
+      test('blogs are correctly ordered by likes', async ({ page }) => {
+        const blogElement = await page.getByRole('heading', { name: 'Tests for Days' }).locator('..')
+
+        const otherBlogElement = await page.getByRole('heading', { name: 'Playwright Blog' }).locator('..')
+
+        await blogElement.getByRole('button', { name: 'View Details' }).click()
+        await blogElement.getByRole('button', { name: 'Like' }).click()
+        await expect(blogElement.getByText('Likes: 1')).toBeVisible()
+
+        await otherBlogElement.getByRole('button', { name: 'View Details' }).click()
+        await otherBlogElement.getByRole('button', { name: 'Like' }).click()
+        await expect(otherBlogElement.getByText('Likes: 1')).toBeVisible()
+
+        await blogElement.getByRole('button', { name: 'Like' }).click()
+        await expect(blogElement.getByText('Likes: 2')).toBeVisible()
+
+        await expect(page.getByTestId('blog').nth(0)).toContainText('Tests for Days')
+
+        await expect(page.getByTestId('blog').nth(1)).toContainText('Playwright Blog')
+      })
     })
   })
 })
